@@ -23,6 +23,9 @@ import * as Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { CacheModule } from '@nestjs/cache-manager';
+import { CronTask } from './common/tasks/cron.task';
+import { ScheduleModule } from '@nestjs/schedule';
+import { DynamicScheduleService } from './common/tasks/dynamicSchedule.service';
 
 @Module({
   imports: [
@@ -31,6 +34,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     CacheModule.register({
       ttl: 5,
     }),
+    ScheduleModule.forRoot(),
     // ConfigModule.forRoot({
     //   load: [configuration],
     //   isGlobal: true,
@@ -52,6 +56,8 @@ import { CacheModule } from '@nestjs/cache-manager';
   controllers: [AppController],
   providers: [
     AppService,
+    CronTask,
+    DynamicScheduleService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
