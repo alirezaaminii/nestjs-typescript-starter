@@ -26,11 +26,13 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { CronTask } from './common/tasks/cron.task';
 import { ScheduleModule } from '@nestjs/schedule';
 import { DynamicScheduleService } from './common/tasks/dynamicSchedule.service';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
+    TasksModule,
     CacheModule.register({
       ttl: 5,
     }),
@@ -52,6 +54,7 @@ import { DynamicScheduleService } from './common/tasks/dynamicSchedule.service';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
+    TasksModule,
   ],
   controllers: [AppController],
   providers: [
