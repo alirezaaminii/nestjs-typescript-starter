@@ -1,11 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ConsoleLogger, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { HttpExceptionFilter } from './common/errors/exceptionFIlter';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: new ConsoleLogger({
+      logLevels: ['error', 'warn', 'log'],
+      timestamp: true,
+      prefix: 'LOG',
+    }),
+  });
   app.setGlobalPrefix('api');
   app.use((req, res, next) => {
     console.log('[REQ]', req.method, req.originalUrl);
